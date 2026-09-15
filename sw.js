@@ -1,8 +1,10 @@
-const CACHE = 'multiarena-r3';
+const CACHE = 'multiarena-v4.1.0';
 const SHELL = ['./', './index.html', './atelier.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE)
+    .then(c => Promise.all(SHELL.map(url => c.add(new Request(url, { cache: 'reload' })))))
+    .then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
@@ -20,7 +22,7 @@ self.addEventListener('fetch', e => {
     return;
   }
   if (r.mode === 'navigate') {
-    e.respondWith(fetch(r).then(res => {
+    e.respondWith(fetch(r, { cache: 'no-store' }).then(res => {
       const copy = res.clone();
       const target = new URL(r.url).pathname.endsWith('/atelier.html') ? './atelier.html' : './index.html';
       caches.open(CACHE).then(c => c.put(target, copy));
@@ -28,11 +30,12 @@ self.addEventListener('fetch', e => {
     }).catch(() => caches.match(new URL(r.url).pathname.endsWith('/atelier.html') ? './atelier.html' : './index.html')));
     return;
   }
-  e.respondWith(caches.match(r).then(hit => hit || fetch(r).then(res => {
-    if (res.ok && new URL(r.url).origin === self.location.origin) {
-      const copy = res.clone();
-      caches.open(CACHE).then(c => c.put(r, copy));
-    }
-    return res;
-  })));
+  if (new URL(r.url).origin === self.location.origin) {
+    e.respondWith(fetch(r, { cache: 'no-store' }).then(res => {
+      if (res.ok) caches.open(CACHE).then(c => c.put(r, res.clone()));
+      return res;
+    }).catch(() => caches.match(r)));
+    return;
+  }
+  e.respondWith(fetch(r).catch(() => caches.match(r)));
 });
