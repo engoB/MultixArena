@@ -1,4 +1,4 @@
-const CACHE = 'multiarena-v4.3.5';
+const CACHE = 'multiarena-v4.3.6';
 const SHELL = ['./', './index.html', './atelier.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', e => {
