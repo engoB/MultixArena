@@ -1,4 +1,4 @@
-const CACHE = 'multiarena-v4.5.2';
+const CACHE = 'multiarena-v4.5.3';
 const SHELL = ['./', './index.html', './atelier.html', './manifest.webmanifest', './version.json',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png'];
 
@@ -14,7 +14,7 @@ self.addEventListener('activate', event => {
     .then(() => self.clients.claim())
     .then(async () => {
       const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-      clients.forEach(client => client.postMessage({ type: 'APP_UPDATED', version: '4.5.2' }));
+      clients.forEach(client => client.postMessage({ type: 'APP_UPDATED', version: '4.5.3' }));
     }));
 });
 
