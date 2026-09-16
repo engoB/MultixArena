@@ -2,7 +2,7 @@
    Deux caches séparés : la coquille de l'app, et les médias.
    Les médias sont volumineux : on les met en cache à l'usage, avec un plafond,
    pour ne pas saturer le stockage du téléphone. */
-const SHELL_CACHE = 'multiarena-shell-4.6.0';
+const SHELL_CACHE = 'multiarena-shell-4.6.0-r1';
 const MEDIA_CACHE = 'multiarena-media-4.6.0';
 const MEDIA_MAX = 90;            // nombre maximum de fichiers médias gardés
 const SHELL = ['./', './index.html', './atelier.html', './manifest.webmanifest', './version.json',
