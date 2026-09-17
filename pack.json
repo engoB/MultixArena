@@ -1,5 +1,5 @@
 {
-  "version": "4.6.4",
+  "version": "4.6.5",
   "img": {
     "bg_app": "./assets/fonds/bg_app.jpg",
     "bg_menu": "./assets/fonds/bg_menu.jpg",
@@ -85,7 +85,17 @@
     "hero_8": "./assets/heros/hero_8.png",
     "heroFull_8": "./assets/heros/heroFull_8.png",
     "hero_9": "./assets/heros/hero_9.png",
-    "heroFull_9": "./assets/heros/heroFull_9.png"
+    "heroFull_9": "./assets/heros/heroFull_9.png",
+    "heroFace_0": "./assets/heros/heroFace_0.webp",
+    "heroFace_1": "./assets/heros/heroFace_1.webp",
+    "heroFace_2": "./assets/heros/heroFace_2.webp",
+    "heroFace_3": "./assets/heros/heroFace_3.webp",
+    "heroFace_4": "./assets/heros/heroFace_4.webp",
+    "heroFace_5": "./assets/heros/heroFace_5.webp",
+    "heroFace_6": "./assets/heros/heroFace_6.webp",
+    "heroFace_7": "./assets/heros/heroFace_7.webp",
+    "heroFace_8": "./assets/heros/heroFace_8.webp",
+    "heroFace_9": "./assets/heros/heroFace_9.webp"
   },
   "snd": {
     "bad": "./assets/sons/bad.m4a",
