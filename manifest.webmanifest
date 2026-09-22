@@ -4,7 +4,7 @@
   "description": "Jeu d'arène pour apprendre les tables de multiplication.",
   "lang": "fr", "start_url": "./", "scope": "./",
   "display": "standalone", "display_override": ["standalone", "fullscreen"],
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "background_color": "#0B1B33", "theme_color": "#0E1F3D",
   "categories": ["education", "games", "kids"],
   "icons": [
