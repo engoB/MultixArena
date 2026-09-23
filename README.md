@@ -3,7 +3,7 @@
 ### Les tables de multiplication deviennent un jeu d'arène
 
 [![Jouer](https://img.shields.io/badge/JOUER-GitHub%20Pages-36c96b?style=for-the-badge)](https://engob.github.io/MultixArena/)
-![Version](https://img.shields.io/badge/version-4.6.9-3fa9f5?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-4.6.10-3fa9f5?style=for-the-badge)
 ![PWA](https://img.shields.io/badge/PWA-hors--ligne-ffcf3d?style=for-the-badge)
 
 Multi X Arena est un jeu éducatif en français, pensé pour apprendre les tables sans avoir l'impression de réciter une leçon. Il combine aventure solo, progression mémorielle, héros à pouvoirs et vrais duels locaux sur le même écran.
@@ -23,13 +23,12 @@ Multi X Arena est un jeu éducatif en français, pensé pour apprendre les table
 - **Modes à deux** : Bataille et Bats le boss !, jouables face à face sur le même appareil.
 - **Progression locale et hors ligne**, exportable depuis les Options.
 
-## Ce que change la 4.6.9
+## Ce que change la 4.6.10
 
-- **Bataille** et **Bats le boss !** passent désormais le décompte sans écran bleu ;
-- le curseur **Effets et clics UI** réagit en continu sur mobile et son réglage reste mémorisé ;
-- les clics de navigation sont moins agressifs, y compris au volume maximal ;
-- la vignette de la **Princesse** utilise son portrait carré sans zoom ni décalage forcé ;
-- le vérificateur de livraison bloque le retour des deux erreurs de décompte.
+- sur iPhone et iPad, les clics passent par un gain Web Audio réellement piloté par le curseur **Effets et clics UI** ;
+- le son `tap` conserve une atténuation dédiée afin que les boutons Options et Retour restent discrets ;
+- tous les médias sont immédiatement mis en pause lorsque la PWA passe en arrière-plan, est masquée ou est fermée ;
+- seule la musique qui jouait avant une interruption reprend lorsque l'app redevient visible ; aucun ancien effet sonore ne repart.
 
 ## Héros secrets
 
@@ -78,7 +77,7 @@ Le script contrôle la cohérence de version, le bundle, le service worker, l'or
 
 ## Documentation
 
-- [Diagnostic technique 4.6.9](docs/DIAGNOSTIC_TECHNIQUE.md)
+- [Diagnostic technique 4.6.10](docs/DIAGNOSTIC_TECHNIQUE.md)
 - [Idées d'amélioration classées](docs/IDEES_AMELIORATION.md)
 
 ## Confidentialité

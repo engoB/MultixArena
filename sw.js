@@ -2,7 +2,7 @@
    Deux caches séparés : la coquille de l'app, et les médias.
    Les médias sont volumineux : on les met en cache à l'usage, avec un plafond,
    pour ne pas saturer le stockage du téléphone. */
-const SHELL_CACHE = 'multiarena-shell-4.6.9';
+const SHELL_CACHE = 'multiarena-shell-4.6.10';
 const MEDIA_CACHE = 'multiarena-media-4.6.5'; // stable : les assets inchangés survivent aux mises à jour
 const MEDIA_MAX = 128;           // assez pour toutes les images et tous les sons du pack
 const SHELL = ['./', './index.html', './atelier.html', './manifest.webmanifest', './version.json', './pack.json',
@@ -24,7 +24,7 @@ self.addEventListener('activate', event => {
     .then(() => self.clients.claim())
     .then(async () => {
       const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-      clients.forEach(client => client.postMessage({ type: 'APP_UPDATED', version: '4.6.9' }));
+      clients.forEach(client => client.postMessage({ type: 'APP_UPDATED', version: '4.6.10' }));
     }));
 });
 
