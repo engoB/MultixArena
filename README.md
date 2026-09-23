@@ -3,7 +3,7 @@
 ### Les tables de multiplication deviennent un jeu d'arène
 
 [![Jouer](https://img.shields.io/badge/JOUER-GitHub%20Pages-36c96b?style=for-the-badge)](https://engob.github.io/MultixArena/)
-![Version](https://img.shields.io/badge/version-4.6.11-3fa9f5?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-4.6.12-3fa9f5?style=for-the-badge)
 ![PWA](https://img.shields.io/badge/PWA-hors--ligne-ffcf3d?style=for-the-badge)
 
 Multi X Arena est un jeu éducatif en français, pensé pour apprendre les tables sans avoir l'impression de réciter une leçon. Il combine aventure solo, progression mémorielle, héros à pouvoirs et vrais duels locaux sur le même écran.
@@ -23,10 +23,11 @@ Multi X Arena est un jeu éducatif en français, pensé pour apprendre les table
 - **Modes à deux** : Bataille et Bats le boss !, jouables face à face sur le même appareil.
 - **Progression locale et hors ligne**, exportable depuis les Options.
 
-## Ce que change la 4.6.11
+## Ce que change la 4.6.12
 
-- les petites vignettes de la colonne gauche du choix des héros ont un cadrage dédié, homogène et correctement découpé ;
-- le swipe horizontal entre les mondes ne déclenche plus de son ;
+- les six vignettes visibles du choix des héros ont chacune un cadrage dédié : visages centrés, personnages à une échelle homogène et Princesse agrandie ;
+- les transformations destinées aux badges de partie ne peuvent plus déformer les vignettes de sélection ;
+- le swipe horizontal entre les mondes reste silencieux ;
 - les correctifs audio 4.6.10 restent actifs : volume des effets compatible iOS et musique coupée en arrière-plan.
 
 ## Héros secrets
@@ -76,7 +77,7 @@ Le script contrôle la cohérence de version, le bundle, le service worker, l'or
 
 ## Documentation
 
-- [Diagnostic technique 4.6.11](docs/DIAGNOSTIC_TECHNIQUE.md)
+- [Diagnostic technique 4.6.12](docs/DIAGNOSTIC_TECHNIQUE.md)
 - [Idées d'amélioration classées](docs/IDEES_AMELIORATION.md)
 
 ## Confidentialité
