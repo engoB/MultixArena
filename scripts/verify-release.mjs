@@ -15,7 +15,7 @@ const sw = read('sw.js');
 if (pack.version !== version) fail(`Versions différentes : version.json=${version}, pack.json=${pack.version}`);
 if (!index.includes(`VERSION ",${JSON.stringify(version)}`) && !index.includes(version)) fail(`Version ${version} absente du jeu`);
 if (!index.includes(`t.version&&t.version!==\`${version}\`&&await e.update()`)) fail(`Comparaison de mise à jour absente pour ${version}`);
-if (/4\.6\.(8|9|10)/.test(index)) fail('Ancienne version 4.6.8, 4.6.9 ou 4.6.10 encore présente dans le jeu');
+if (/4\.6\.(8|9|10|11)/.test(index)) fail('Ancienne version 4.6.8 à 4.6.11 encore présente dans le jeu');
 if (!sw.includes(`multiarena-shell-${version}`)) fail(`Cache du service worker non versionné en ${version}`);
 if (manifest.orientation !== 'portrait-primary') fail('Le manifeste ne verrouille pas portrait-primary');
 
@@ -36,7 +36,7 @@ for (const marker of [
   'let t=window.setTimeout(()=>b(e=>e-1),y===0?650:850);return()=>window.clearTimeout(t)',
   '"aria-label":`Volume des effets et clics UI`,onInput:',
   'i=e===`tap`?.12:.26',
-  '.hero-face-5{transform:none;object-position:center}',
+  '.hero-game-badge .hero-face-5{transform:none;object-position:center}',
   'window.__MULTIX_AUDIO_GUARD__',
   'effectsContext.createMediaElementSource(media)',
   'tapAttenuation',
@@ -46,7 +46,10 @@ for (const marker of [
   "document.addEventListener('freeze'",
   'if (record.music) record.wasPlaying ||=',
   '.hero-thumb{overflow:hidden}',
-  '.hero-thumb .hero-face-5{object-position:center;transform:scale(1.22) translateY(3%)}',
+  '.hero-thumb .hero-face{object-fit:contain!important;object-position:center!important;transform:none}',
+  '.hero-thumb .hero-face-1{transform:scale(1.1) translate(5%,4%)}',
+  '.hero-thumb .hero-face-3{transform:scale(1.08) translate(-7%,4%)}',
+  '.hero-thumb .hero-face-5{transform:scale(1.48) translate(-1%,9%)}',
   'i!==t&&r(i)',
 ]) {
   if (!index.includes(marker)) fail(`Correctif de régression absent : ${marker}`);
@@ -56,6 +59,7 @@ for (const forbidden of [
   'let e=setTimeout(()=>c(s-1),s===0?700:900);return()=>clearTimeout(e)',
   'let e=window.setTimeout(()=>b(e=>e-1),y===0?650:850);return()=>window.clearTimeout(e)',
   'i!==t&&(F.page(),r(i))',
+  '.hero-thumb .hero-face{object-fit:contain!important;object-position:center;transform:scale(1.16)}',
 ]) {
   if (index.includes(forbidden)) fail(`Régression TDZ encore présente : ${forbidden}`);
 }
