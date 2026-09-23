@@ -1,15 +1,22 @@
-# Diagnostic technique — Multi X Arena 4.6.6
+# Diagnostic technique — Multi X Arena 4.6.9
 
 ## Conclusion
 
-Le principal problème de jouabilité à deux ne venait pas de la puissance de l'appareil : un gestionnaire anti-double-tap global annulait tout second toucher reçu moins de 320 ms après le premier. Sur un écran partagé, cela revenait précisément à bloquer l'un des deux joueurs. La 4.6.6 le retire et traite les réponses dès `pointerdown`, avec un verrou indépendant par joueur.
+Le fond bleu au lancement des deux modes duo venait d'une zone morte temporelle JavaScript (TDZ) dans chaque décompte. Une variable locale `e`, déclarée pour stocker le minuteur, masquait la prop `e` qui porte les réglages. À la fin du décompte, l'accès à `e.settings` levait `ReferenceError: Cannot access 'e' before initialization` et React démontait l'écran. La 4.6.9 donne un nom distinct aux deux minuteurs et le contrôle de livraison refuse désormais les anciennes signatures fautives.
+
+Le curseur des effets utilisait seulement `onChange`, moins fiable pendant un glissement sur certaines versions mobiles de WebKit. Il utilise maintenant l'événement natif continu `input`, applique le gain immédiatement et enregistre la valeur dans la sauvegarde locale. Le gain propre au son `tap` est aussi séparé des sons de jeu afin que les boutons Options et Retour restent modérés.
+
+Le portrait carré `heroFace_5.webp` de la Princesse était ensuite agrandi et décalé par une règle CSS ajoutée tardivement. Ce second cadrage a été retiré : le fichier déjà recadré est affiché tel quel.
 
 La seconde source de fragilité était le préchargement simultané des 95 images, toutes conservées en mémoire. Sur WebKit/iOS, la mémoire décodée peut dépasser largement le poids des fichiers et provoquer un rechargement brutal de la PWA. La 4.6.6 ne bloque plus le lancement sur tout le pack : elle charge les visuels critiques, puis les autres par petits lots inactifs sans conserver les objets `Image`.
 
 ## Correctifs P0 intégrés
 
-| Sujet | Cause | Correction 4.6.6 | Effet attendu |
+| Sujet | Cause | Correction | Effet attendu |
 |---|---|---|---|
+| Écran bleu duo | variable de minuteur masquant les réglages dans les deux décomptes | noms de minuteurs distincts et signatures interdites par le vérificateur | Bataille et Boss arrivent sur la première question |
+| Volume des clics | événement de curseur mobile fragile et gain `tap` commun aux autres effets | mise à jour sur `input`, gain du clic dédié, défaut à 40 % | réglage immédiat et clics moins forts |
+| Vignette Princesse | zoom et translation CSS appliqués à un portrait déjà recadré | suppression de la transformation pour l'héroïne 5 | visage net et centré |
 | Multitouch duo | anti-double-tap global à 320 ms + `click` tardif | suppression du filtre global, `pointerdown`, `touch-action:none` sur les zones de jeu | deux réponses réellement simultanées |
 | Temps morts | 900 à 1 450 ms après une erreur | 450 ms en Bataille, maximum 480 ms dans Bats le boss | rythme continu et lisible |
 | Crash iOS/PWA | décodage et rétention des 95 images au démarrage | noyau visuel prioritaire, lots de 8 au repos, références libérées | pic mémoire réduit |
