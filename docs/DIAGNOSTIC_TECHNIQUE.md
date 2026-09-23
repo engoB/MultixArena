@@ -1,8 +1,10 @@
-# Diagnostic technique — Multi X Arena 4.6.12
+# Diagnostic technique — Multi X Arena 4.6.13
 
 ## Conclusion
 
-La 4.6.12 remplace le zoom générique des vignettes par un cadrage dédié à chaque héros. L'Elfe et le Nain sont dézoomés et recentrés, tandis que la Princesse est agrandie et descendue pour afficher un portrait de taille comparable aux autres. Les transformations utilisées dans les badges de partie sont maintenant strictement limitées à `.hero-game-badge` et ne peuvent plus modifier la grille de sélection. Le changement de monde par swipe ne joue toujours plus `F.page()`.
+La 4.6.13 restaure exactement le principe de l'ancienne grille de sélection : elle charge `hero_N.png`, l'avatar carré en pied, avant tout portrait de secours. La règle `.hero-thumb .hero-face` impose `object-fit: contain` et annule toute transformation, afin que chaque héros reste visible entièrement. Les portraits `heroFace_N.webp` restent réservés aux badges et à la boutique.
+
+Les clics refusés conservent leur message d'explication et leur animation, mais le gestionnaire commun `onDenied` ne déclenche plus `F.denied()`. Les sons d'erreur de gameplay sur une mauvaise réponse ne sont pas modifiés.
 
 Le volume appliqué aux fichiers d'effets reposait sur `HTMLMediaElement.volume`. Certaines versions mobiles de WebKit, notamment dans une PWA iOS, peuvent ignorer ce gain. La 4.6.10 a introduit un nœud `GainNode` Web Audio et l'arrêt des médias en arrière-plan ; ces protections restent actives.
 
@@ -19,7 +21,8 @@ La seconde source de fragilité était le préchargement simultané des 95 image
 | Sujet | Cause | Correction | Effet attendu |
 |---|---|---|---|
 | Écran bleu duo | variable de minuteur masquant les réglages dans les deux décomptes | noms de minuteurs distincts et signatures interdites par le vérificateur | Bataille et Boss arrivent sur la première question |
-| Vignettes du choix des héros | même zoom imposé à des compositions très différentes, plus transformations globales partagées avec les badges | cadrage individuel des dix portraits dans `.hero-thumb` et règles des badges limitées à `.hero-game-badge` | visages centrés et échelle homogène dans la colonne gauche |
+| Vignettes du choix des héros | portraits rapprochés et transformations de cadrage | retour aux avatars carrés `hero_N.png`, affichés avec `contain` et sans transformation | héros visibles entièrement comme dans l'ancienne grille |
+| Clic refusé | `onDenied` appelait `F.denied()` en plus du retour visuel | suppression du déclenchement audio, message et animation conservés | aucun son d'erreur lors d'un clic sur un élément verrouillé |
 | Son au swipe des mondes | appel explicite à `F.page()` après le geste | navigation directe sans effet sonore | swipe silencieux |
 | Volume des clics iOS | `HTMLMediaElement.volume` ignoré par certaines PWA WebKit | effets routés par un `GainNode`, clic `tap` atténué à 35 % de son gain déjà réglé | curseur réellement appliqué et clic discret |
 | Musique en arrière-plan | aucune écoute du cycle de vie de la page | pause sur `visibilitychange`, `pagehide` et `freeze`, reprise sélective sur retour visible | silence immédiat lorsque l'app est masquée ou fermée |
