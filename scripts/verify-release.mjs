@@ -15,13 +15,17 @@ const sw = read('sw.js');
 if (pack.version !== version) fail(`Versions différentes : version.json=${version}, pack.json=${pack.version}`);
 if (!index.includes(`VERSION ",${JSON.stringify(version)}`) && !index.includes(version)) fail(`Version ${version} absente du jeu`);
 if (!index.includes(`t.version&&t.version!==\`${version}\`&&await e.update()`)) fail(`Comparaison de mise à jour absente pour ${version}`);
-if (/4\.6\.8/.test(index)) fail('Ancienne version 4.6.8 encore présente dans le jeu');
+if (/4\.6\.(8|9|10)/.test(index)) fail('Ancienne version 4.6.8, 4.6.9 ou 4.6.10 encore présente dans le jeu');
 if (!sw.includes(`multiarena-shell-${version}`)) fail(`Cache du service worker non versionné en ${version}`);
 if (manifest.orientation !== 'portrait-primary') fail('Le manifeste ne verrouille pas portrait-primary');
 
 const script = index.match(/<script[^>]*type="module"[^>]*>([\s\S]*?)<\/script>/)?.[1];
 if (!script) fail('Bundle JavaScript introuvable dans index.html');
 new Function(script);
+
+const audioGuard = index.match(/<script id="audio-compat-guard">([\s\S]*?)<\/script>/)?.[1];
+if (!audioGuard) fail('Garde audio de compatibilité introuvable');
+new Function(audioGuard);
 
 for (const marker of ['data-battle-answer', 'data-boss-answer', 'onPointerDown', 'cadenceStars', 'guardian-question']) {
   if (!index.includes(marker)) fail(`Correctif critique absent : ${marker}`);
@@ -33,6 +37,17 @@ for (const marker of [
   '"aria-label":`Volume des effets et clics UI`,onInput:',
   'i=e===`tap`?.12:.26',
   '.hero-face-5{transform:none;object-position:center}',
+  'window.__MULTIX_AUDIO_GUARD__',
+  'effectsContext.createMediaElementSource(media)',
+  'tapAttenuation',
+  'if (media.loop)',
+  "document.addEventListener('visibilitychange'",
+  "window.addEventListener('pagehide'",
+  "document.addEventListener('freeze'",
+  'if (record.music) record.wasPlaying ||=',
+  '.hero-thumb{overflow:hidden}',
+  '.hero-thumb .hero-face-5{object-position:center;transform:scale(1.22) translateY(3%)}',
+  'i!==t&&r(i)',
 ]) {
   if (!index.includes(marker)) fail(`Correctif de régression absent : ${marker}`);
 }
@@ -40,6 +55,7 @@ for (const marker of [
 for (const forbidden of [
   'let e=setTimeout(()=>c(s-1),s===0?700:900);return()=>clearTimeout(e)',
   'let e=window.setTimeout(()=>b(e=>e-1),y===0?650:850);return()=>window.clearTimeout(e)',
+  'i!==t&&(F.page(),r(i))',
 ]) {
   if (index.includes(forbidden)) fail(`Régression TDZ encore présente : ${forbidden}`);
 }
