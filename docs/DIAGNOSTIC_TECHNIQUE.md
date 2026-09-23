@@ -1,10 +1,14 @@
-# Diagnostic technique — Multi X Arena 4.6.9
+# Diagnostic technique — Multi X Arena 4.6.11
 
 ## Conclusion
 
-Le fond bleu au lancement des deux modes duo venait d'une zone morte temporelle JavaScript (TDZ) dans chaque décompte. Une variable locale `e`, déclarée pour stocker le minuteur, masquait la prop `e` qui porte les réglages. À la fin du décompte, l'accès à `e.settings` levait `ReferenceError: Cannot access 'e' before initialization` et React démontait l'écran. La 4.6.9 donne un nom distinct aux deux minuteurs et le contrôle de livraison refuse désormais les anciennes signatures fautives.
+La 4.6.11 isole le cadrage de la colonne de sélection des héros dans `.hero-thumb`. Les portraits sont désormais découpés par leur carte et utilisent des zooms locaux, sans modifier le grand visuel du héros ni les badges en partie. Le changement de monde par swipe ne joue plus `F.page()`.
 
-Le curseur des effets utilisait seulement `onChange`, moins fiable pendant un glissement sur certaines versions mobiles de WebKit. Il utilise maintenant l'événement natif continu `input`, applique le gain immédiatement et enregistre la valeur dans la sauvegarde locale. Le gain propre au son `tap` est aussi séparé des sons de jeu afin que les boutons Options et Retour restent modérés.
+Le volume appliqué aux fichiers d'effets reposait sur `HTMLMediaElement.volume`. Certaines versions mobiles de WebKit, notamment dans une PWA iOS, peuvent ignorer ce gain. La 4.6.10 a introduit un nœud `GainNode` Web Audio et l'arrêt des médias en arrière-plan ; ces protections restent actives.
+
+La musique n'était par ailleurs arrêtée par aucun événement de cycle de vie. Tous les éléments audio créés par le jeu sont désormais suivis : `visibilitychange`, `pagehide` et `freeze` les mettent immédiatement en pause. Au retour via `pageshow` ou lorsque le document redevient visible, seule la musique qui était active reprend ; les effets interrompus restent arrêtés.
+
+Les correctifs 4.6.9 du mode duo, du curseur mobile et du portrait Princesse restent intégrés et couverts par le vérificateur de livraison.
 
 Le portrait carré `heroFace_5.webp` de la Princesse était ensuite agrandi et décalé par une règle CSS ajoutée tardivement. Ce second cadrage a été retiré : le fichier déjà recadré est affiché tel quel.
 
@@ -15,7 +19,10 @@ La seconde source de fragilité était le préchargement simultané des 95 image
 | Sujet | Cause | Correction | Effet attendu |
 |---|---|---|---|
 | Écran bleu duo | variable de minuteur masquant les réglages dans les deux décomptes | noms de minuteurs distincts et signatures interdites par le vérificateur | Bataille et Boss arrivent sur la première question |
-| Volume des clics | événement de curseur mobile fragile et gain `tap` commun aux autres effets | mise à jour sur `input`, gain du clic dédié, défaut à 40 % | réglage immédiat et clics moins forts |
+| Vignettes du choix des héros | transformations globales et débordement non masqué | cadrage limité à `.hero-thumb` avec découpe et zooms locaux | portraits homogènes dans la colonne gauche |
+| Son au swipe des mondes | appel explicite à `F.page()` après le geste | navigation directe sans effet sonore | swipe silencieux |
+| Volume des clics iOS | `HTMLMediaElement.volume` ignoré par certaines PWA WebKit | effets routés par un `GainNode`, clic `tap` atténué à 35 % de son gain déjà réglé | curseur réellement appliqué et clic discret |
+| Musique en arrière-plan | aucune écoute du cycle de vie de la page | pause sur `visibilitychange`, `pagehide` et `freeze`, reprise sélective sur retour visible | silence immédiat lorsque l'app est masquée ou fermée |
 | Vignette Princesse | zoom et translation CSS appliqués à un portrait déjà recadré | suppression de la transformation pour l'héroïne 5 | visage net et centré |
 | Multitouch duo | anti-double-tap global à 320 ms + `click` tardif | suppression du filtre global, `pointerdown`, `touch-action:none` sur les zones de jeu | deux réponses réellement simultanées |
 | Temps morts | 900 à 1 450 ms après une erreur | 450 ms en Bataille, maximum 480 ms dans Bats le boss | rythme continu et lisible |
